@@ -1,6 +1,6 @@
 package net.impleri.playerskills.integration.kubejs.api;
 
-import dev.latvian.mods.kubejs.BuilderBase;
+import dev.latvian.mods.kubejs.registry.BuilderBase;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
 import dev.latvian.mods.rhino.util.HideFromJS;
 import dev.latvian.mods.rhino.util.RemapForJS;

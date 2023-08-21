@@ -1,6 +1,8 @@
 package net.impleri.playerskills.integration.kubejs.events;
 
-import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
+//import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
+import dev.latvian.mods.kubejs.registry.BuilderType;
+import dev.latvian.mods.kubejs.registry.RegistryInfo;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
 import dev.latvian.mods.rhino.util.HideFromJS;
 import net.impleri.playerskills.api.Skill;
@@ -16,7 +18,7 @@ import java.util.function.Consumer;
 
 
 public class SkillsModificationEventJS extends BaseSkillsRegistryEventJS {
-    public SkillsModificationEventJS(Map<String, RegistryObjectBuilderTypes.BuilderType<Skill<?>>> types) {
+    public SkillsModificationEventJS(Map<String, BuilderType> types) {
         super(types);
     }
 

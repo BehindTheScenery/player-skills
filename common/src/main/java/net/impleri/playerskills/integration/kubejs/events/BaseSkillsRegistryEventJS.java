@@ -1,7 +1,9 @@
 package net.impleri.playerskills.integration.kubejs.events;
 
-import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
+//import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
+import dev.latvian.mods.kubejs.registry.BuilderType;
 import dev.latvian.mods.kubejs.event.EventJS;
+import dev.latvian.mods.kubejs.registry.RegistryInfo;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
 import dev.latvian.mods.rhino.util.HideFromJS;
 import net.impleri.playerskills.PlayerSkills;
@@ -14,9 +16,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 public class BaseSkillsRegistryEventJS extends EventJS {
-    private final Map<String, RegistryObjectBuilderTypes.BuilderType<Skill<?>>> types;
+    private final Map<String, BuilderType> types;
 
-    public BaseSkillsRegistryEventJS(Map<String, RegistryObjectBuilderTypes.BuilderType<Skill<?>>> types) {
+    public BaseSkillsRegistryEventJS(Map<String, BuilderType> types) {
         super();
 
         this.types = types;
@@ -29,7 +31,7 @@ public class BaseSkillsRegistryEventJS extends EventJS {
         var type = SkillResourceLocation.of(skillType).toString();
 
         PlayerSkills.LOGGER.debug("Creating skill builder for " + name.toString() + " typed as " + type);
-        @Nullable RegistryObjectBuilderTypes.BuilderType<Skill<?>> builderType = types.get(type);
+        @Nullable BuilderType builderType = types.get(type);
         if (builderType == null) {
             ConsoleJS.SERVER.error("Builder not found for skill type " + type);
             return null;

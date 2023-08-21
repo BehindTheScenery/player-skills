@@ -63,6 +63,6 @@ public class PlayerSkillsPlugin extends KubeJSPlugin {
     }
 
     private <T> void onSkillChange(SkillChangedEvent<T> event) {
-        EventsBinding.SKILL_CHANGED.post(event.getSkill().getName(), new PlayerSkillChangedEventJS<T>(event));
+        EventsBinding.SKILL_CHANGED.post(new PlayerSkillChangedEventJS<T>(event), event.getSkill().getName());
     }
 }

@@ -1,7 +1,8 @@
 package net.impleri.playerskills.integration.kubejs.skills;
 
-import dev.latvian.mods.kubejs.BuilderBase;
-import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
+import dev.latvian.mods.kubejs.registry.BuilderBase;
+//import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
+import dev.latvian.mods.kubejs.registry.RegistryInfo;
 import dev.latvian.mods.rhino.util.HideFromJS;
 import dev.latvian.mods.rhino.util.RemapForJS;
 import net.impleri.playerskills.PlayerSkills;
@@ -37,7 +38,7 @@ public class SkillConditionBuilderJS<T> extends BuilderBase<Skill<T>> {
     }
 
     @Override
-    public RegistryObjectBuilderTypes<Skill<?>> getRegistryType() {
+    public RegistryInfo getRegistryType() {
         return Registries.SKILLS;
     }
 

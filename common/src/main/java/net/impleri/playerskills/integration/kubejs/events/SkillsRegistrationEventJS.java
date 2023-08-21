@@ -1,7 +1,7 @@
 package net.impleri.playerskills.integration.kubejs.events;
 
 import dev.architectury.registry.registries.DeferredRegister;
-import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
+import dev.latvian.mods.kubejs.registry.BuilderType;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
 import net.impleri.playerskills.PlayerSkills;
 import net.impleri.playerskills.api.Skill;
@@ -20,7 +20,7 @@ public class SkillsRegistrationEventJS extends BaseSkillsRegistryEventJS {
     private static final ResourceKey<Registry<Skill<?>>> SKILL_REGISTRY = ResourceKey.createRegistryKey(Skills.REGISTRY_KEY);
     private static final DeferredRegister<Skill<?>> SKILLS = DeferredRegister.create(PlayerSkills.MOD_ID, SKILL_REGISTRY);
 
-    public SkillsRegistrationEventJS(Map<String, RegistryObjectBuilderTypes.BuilderType<Skill<?>>> types) {
+    public SkillsRegistrationEventJS(Map<String, BuilderType> types) {
         super(types);
     }
 

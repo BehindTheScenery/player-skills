@@ -1,7 +1,7 @@
 package net.impleri.playerskills.integration.kubejs.skills;
 
-import dev.latvian.mods.kubejs.BuilderBase;
-import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
+import dev.latvian.mods.kubejs.registry.BuilderBase;
+import dev.latvian.mods.kubejs.registry.RegistryInfo;
 import dev.latvian.mods.rhino.util.HideFromJS;
 import net.impleri.playerskills.api.Skill;
 import net.impleri.playerskills.api.TeamMode;
@@ -28,7 +28,7 @@ public abstract class GenericSkillBuilderJS<T> extends BuilderBase<Skill<T>> {
     }
 
     @Override
-    public RegistryObjectBuilderTypes<Skill<?>> getRegistryType() {
+    public RegistryInfo getRegistryType() {
         return Registries.SKILLS;
     }
 
