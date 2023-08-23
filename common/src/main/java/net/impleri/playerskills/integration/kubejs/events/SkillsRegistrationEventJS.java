@@ -1,6 +1,7 @@
 package net.impleri.playerskills.integration.kubejs.events;
 
 import dev.architectury.registry.registries.DeferredRegister;
+import dev.latvian.mods.kubejs.event.EventResult;
 import dev.latvian.mods.kubejs.registry.BuilderType;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
 import net.impleri.playerskills.PlayerSkills;
@@ -43,6 +44,7 @@ public class SkillsRegistrationEventJS extends BaseSkillsRegistryEventJS {
         SKILLS.register(name, () -> newSkill);
         ConsoleJS.STARTUP.info("Created " + type + " skill " + name);
 
+
         return true;
     }
 
@@ -50,7 +52,7 @@ public class SkillsRegistrationEventJS extends BaseSkillsRegistryEventJS {
         return add(skillName, type, null);
     }
 
-    protected void afterPosted(boolean isCanceled) {
+    protected void afterPosted(EventResult result) {
         SKILLS.register();
     }
 }
