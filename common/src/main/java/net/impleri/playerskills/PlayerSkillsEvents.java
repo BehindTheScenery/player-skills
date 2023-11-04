@@ -6,6 +6,7 @@ import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.ReloadListenerRegistry;
 import net.impleri.playerskills.commands.PlayerSkillsCommands;
+import net.impleri.playerskills.commands.PlayerSkillsPresetsCommands;
 import net.impleri.playerskills.server.NetHandler;
 import net.impleri.playerskills.server.events.SkillChangedEvent;
 import net.impleri.playerskills.server.registry.PlayerSkills;
@@ -37,6 +38,7 @@ public final class PlayerSkillsEvents implements ResourceManagerReloadListener {
         SkillChangedEvent.EVENT.register(NetHandler::syncPlayer);
 
         CommandRegistrationEvent.EVENT.register(PlayerSkillsCommands::register);
+        CommandRegistrationEvent.EVENT.register(PlayerSkillsPresetsCommands::register);
     }
 
     public <T> void resyncPlayer(UUID playerId) {
