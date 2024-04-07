@@ -10,11 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -26,14 +22,14 @@ public abstract class RestrictionsApi<T, R extends AbstractRestriction<T>> {
 
     private final Field[] allRestrictionFields;
 
-    private final Map<Player, List<R>> restrictionsCache = new ConcurrentHashMap<>();
+    private final Map<UUID, List<R>> restrictionsCache = new ConcurrentHashMap<>();
 
     private record ReplacementCacheKey<RT, RR extends AbstractRestriction<RT>>(RT target, ResourceLocation dimension,
                                                                                ResourceLocation biome,
                                                                                Predicate<RR> filter) {
     }
 
-    private final Map<Player, Map<ReplacementCacheKey<T, R>, T>> replacementCache = new ConcurrentHashMap<>();
+    private final Map<UUID, Map<ReplacementCacheKey<T, R>, T>> replacementCache = new ConcurrentHashMap<>();
 
     private final PlayerSkillsLogger logger;
 
@@ -52,8 +48,8 @@ public abstract class RestrictionsApi<T, R extends AbstractRestriction<T>> {
 
     public void clearPlayerCache(SkillChangedEvent<?> event) {
         var player = event.getPlayer();
-        restrictionsCache.remove(player);
-        replacementCache.remove(player);
+        restrictionsCache.remove(player.getUUID());
+        replacementCache.remove(player.getUUID());
     }
 
     private Field getField(String name) {
@@ -104,19 +100,19 @@ public abstract class RestrictionsApi<T, R extends AbstractRestriction<T>> {
     }
 
     protected Predicate<R> inIncludedDimension(@Nullable ResourceLocation dimension) {
-        return restriction -> restriction.includeDimensions.size() == 0 || restriction.includeDimensions.contains(dimension);
+        return restriction -> restriction.includeDimensions.isEmpty() || restriction.includeDimensions.contains(dimension);
     }
 
     protected Predicate<R> notInExcludedDimension(@Nullable ResourceLocation dimension) {
-        return restriction -> restriction.excludeDimensions.size() == 0 || !restriction.excludeDimensions.contains(dimension);
+        return restriction -> restriction.excludeDimensions.isEmpty() || !restriction.excludeDimensions.contains(dimension);
     }
 
     protected Predicate<R> inIncludedBiome(@Nullable ResourceLocation biome) {
-        return restriction -> restriction.includeBiomes.size() == 0 || restriction.includeBiomes.contains(biome);
+        return restriction -> restriction.includeBiomes.isEmpty() || restriction.includeBiomes.contains(biome);
     }
 
     protected Predicate<R> notInExcludedBiome(@Nullable ResourceLocation biome) {
-        return restriction -> restriction.excludeBiomes.size() == 0 || !restriction.excludeBiomes.contains(biome);
+        return restriction -> restriction.excludeBiomes.isEmpty() || !restriction.excludeBiomes.contains(biome);
     }
 
     private List<R> populatePlayerRestrictions(@NotNull Player player) {
@@ -127,17 +123,17 @@ public abstract class RestrictionsApi<T, R extends AbstractRestriction<T>> {
     }
 
     private List<R> getRestrictionsFor(Player player) {
-        return restrictionsCache.computeIfAbsent(player, this::populatePlayerRestrictions);
+        return restrictionsCache.computeIfAbsent(player.getUUID(), uuid -> populatePlayerRestrictions(player));
     }
 
-    private Stream<R> getRestrictionsFor(Player player, T target, ResourceLocation dimension, ResourceLocation biome, Predicate<R> filter) {
+    private Stream<R> getRestrictionsFor(Player player, T target, ResourceLocation dimension, ResourceLocation biome, Predicate<R> customFilter) {
         return getRestrictionsFor(player).stream()
                 .filter(matchesTarget(target))
                 .filter(inIncludedDimension(dimension))
                 .filter(notInExcludedDimension(dimension))
                 .filter(inIncludedBiome(biome))
                 .filter(notInExcludedBiome(biome))
-                .filter(filter);
+                .filter(customFilter);
     }
 
     private Stream<R> getReplacementsFor(Player player) {
@@ -194,7 +190,7 @@ public abstract class RestrictionsApi<T, R extends AbstractRestriction<T>> {
      */
     @NotNull
     public T getReplacementFor(@NotNull Player player, @NotNull T target, @NotNull ResourceLocation dimension, @NotNull ResourceLocation biome, @Nullable Predicate<R> filter) {
-        var playerCache = replacementCache.computeIfAbsent(player, (_player) -> new HashMap<>());
+        var playerCache = replacementCache.computeIfAbsent(player.getUUID(), (uuid) -> new HashMap<>());
 
         var actualFilter = filter == null ? emptyFilter : filter;
         var cacheKey = new ReplacementCacheKey<T, R>(target, dimension, biome, actualFilter);
@@ -214,7 +210,7 @@ public abstract class RestrictionsApi<T, R extends AbstractRestriction<T>> {
         );
 
         playerCache.put(cacheKey, replacement);
-        replacementCache.put(player, playerCache);
+        replacementCache.put(player.getUUID(), playerCache);
 
         return replacement;
     }

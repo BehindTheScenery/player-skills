@@ -13,6 +13,7 @@ import net.minecraft.tags.TagKey;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -57,8 +58,8 @@ abstract public class AbstractRegistrationEventJS<T, R extends AbstractRestricti
     }
 
     @HideFromJS
-    private String appendListInfo(List<ResourceLocation> list, String description) {
-        return list.isEmpty() ? "" : description + " " + list;
+    private String appendListInfo(Set<ResourceLocation> set, String description) {
+        return set.isEmpty() ? "" : description + " " + set;
     }
 
     @HideFromJS
